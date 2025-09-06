@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EcoFinds Checkout</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    color: #324d29;
+  }
+  header {
+    background: #5E936C;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  main.checkout-container {
+    max-width: 900px;
+    margin: 2rem auto 4rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+  }
+  h2.section-title {
+    color: #5E936C;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #5E936C;
+    padding-bottom: 6px;
+  }
+  .cart-summary {
+    margin-bottom: 2rem;
+    border: 1.3px solid #96ca76;
+    border-radius: 10px;
+    background: #f2f8f1;
+    padding: 1rem 1.5rem;
+  }
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #c5d6bc;
+  }
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+  form.checkout-form {
+    background: #eef7ea;
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+  form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  form input[type="text"],
+  form input[type="email"],
+  form textarea,
+  form select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    border: 1.5px solid #96ca76;
+    border-radius: 6px;
+    font-size: 1rem;
+    box-sizing: border-box;
+  }
+  form textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  form button.submit-btn {
+    background: #4caf50;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px #8bc34a88;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+  form button.submit-btn:hover {
+    background: #3a9342;
+  }
+  .order-success {
+    text-align: center;
+    margin-top: 20px;
+    color: #4caf50;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .tick-icon {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background-color: #4caf50;
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .tick-icon::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 22px;
+    width: 14px;
+    height: 28px;
+    border: solid white;
+    border-width: 0 6px 6px 0;
+    transform: rotate(45deg);
+  }
+  .back-to-product-btn {
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 5px 15px #8bc34a88;
+    transition: background-color 0.3s ease;
+  }
+  .back-to-product-btn:hover {
+    background-color: #3a9342;
+  }
+  footer.contact-info {
+    max-width: 900px;
+    margin: 2rem auto 2rem;
+    padding: 1rem 2rem;
+    background: #d9f0d9;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: #2e5028;
+  }
+  footer.contact-info h3 {
+    margin-top: 0;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  footer.contact-info p {
+    margin: 4px 0;
+  }
+  @media (max-width: 600px) {
+    main.checkout-container, footer.contact-info {
+      margin: 1rem;
+      padding: 1rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  EcoFinds Checkout
+</header>
+
+<main class="checkout-container" role="main">
+
+  <section class="cart-summary" aria-label="Cart Summary" id="cartSummarySection">
+    <h2 class="section-title">Items in Your Cart</h2>
+    <div id="cartItemsList">
+      <!-- Cart items will be dynamically injected here -->
+      <p>Loading cart items...</p>
+    </div>
+  </section>
+
+  <section id="checkoutFormSection">
+    <h2 class="section-title">Shipping and Payment Details</h2>
+    <form class="checkout-form" id="checkoutForm" novalidate>
+      <label for="fullName">Full Name*</label>
+      <input type="text" id="fullName" name="fullName" required />
+
+      <label for="email">Email Address*</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="address">Shipping Address*</label>
+      <textarea id="address" name="address" required></textarea>
+
+      <label for="paymentMethod">Payment Method*</label>
+      <select id="paymentMethod" name="paymentMethod" required>
+        <option value="">Select Payment Method</option>
+        <option value="credit-card">Credit/Debit Card</option>
+        <option value="paypal">PayPal</option>
+        <option value="cod">Cash on Delivery</option>
+      </select>
+
+      <button class="submit-btn" type="submit">Place Order</button>
+    </form>
+  </section>
+
+  <section id="orderSuccessSection" style="display:none; text-align:center;">
+    <div class="tick-icon" aria-hidden="true"></div>
+    <div class="order-success">Order placed successfully!</div>
+    <button class="back-to-product-btn" type="button" id="backToProductBtn">Back to Product Page</button>
+  </section>
+
+</main>
+
+<footer class="contact-info" aria-label="Contact Information">
+  <h3>Contact Us</h3>
+  <p>Email: support@ecofinds.example.com</p>
+  <p>Phone: +1 234 567 890</p>
+  <p>Address: 123 Green Street, Sustainability City, Earth</p>
+</footer>
+
+<script>
+  function renderCartItems() {
+    const container = document.getElementById('cartItemsList');
+    const cartItems = JSON.parse(localStorage.getItem('ecoCartItems') || '[]');
+    container.innerHTML = '';
+
+    if(cartItems.length === 0){
+      container.innerHTML = '<p>Your cart is empty.</p>';
+      return;
+    }
+
+    const ul = document.createElement('ul');
+    ul.style.listStyle = 'none';
+    ul.style.paddingLeft = '0';
+
+    cartItems.forEach(item => {
+      const li = document.createElement('li');
+      li.style.display = 'flex';
+      li.style.justifyContent = 'space-between';
+      li.style.padding = '8px 0';
+      li.style.borderBottom = '1px solid #c5d6bc';
+      li.textContent = `${item.name} (Quantity: ${item.quantity})`;
+      ul.appendChild(li);
+    });
+
+    container.appendChild(ul);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderCartItems();
+
+    const form = document.getElementById('checkoutForm');
+    const successSection = document.getElementById('orderSuccessSection');
+    const formSection = document.getElementById('checkoutFormSection');
+    const cartSection = document.getElementById('cartSummarySection');
+    const backBtn = document.getElementById('backToProductBtn');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const fullName = form.fullName.value.trim();
+      const email = form.email.value.trim();
+      const address = form.address.value.trim();
+      const paymentMethod = form.paymentMethod.value;
+
+      if(!fullName || !email || !address || !paymentMethod){
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      // Simulate order placement...
+      formSection.style.display = 'none';
+      cartSection.style.display = 'none';
+      successSection.style.display = 'block';
+
+      // Clear cart
+      localStorage.removeItem('ecoCartItems');
+
+      // Clear cart items listing
+      renderCartItems();
+
+      form.reset();
+    });
+
+    backBtn.addEventListener('click', () => {
+      window.location.href = 'product.html?product=eco-bamboo-water-bottle';
+    });
+  });
+</script>
+</body>
+</html>

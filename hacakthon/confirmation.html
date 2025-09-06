@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Order Success - EcoFinds</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f9f5;
+    color: #278b27;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 2rem;
+  }
+  .checkmark-circle {
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  .checkmark-circle::after {
+    content: "";
+    position: absolute;
+    left: 36px;
+    top: 58px;
+    width: 28px;
+    height: 60px;
+    border: solid white;
+    border-width: 0 12px 12px 0;
+    transform: rotate(45deg);
+  }
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  p {
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto 2rem auto;
+  }
+  button {
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    padding: 14px 36px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    box-shadow: 0 5px 15px #8bc34a88;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #3a9342;
+  }
+</style>
+</head>
+<body>
+  <div class="checkmark-circle" aria-hidden="true"></div>
+  <h1>Order Successful!</h1>
+  <p>Thank you for your purchase at EcoFinds. Your order has been placed successfully.</p>
+  <button id="backToProductsBtn">Back to Products</button>
+
+  <script>
+    document.getElementById('backToProductsBtn').addEventListener('click', () => {
+      window.location.href = 'landingpage.html'; // Change to your landing page URL if needed
+    });
+  </script>
+</body>
+</html>

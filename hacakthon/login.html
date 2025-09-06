@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EcoFinds Login with More B&W Doodles</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Doodle container */
+  .doodle-container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .doodle {
+    position: absolute;
+    filter: grayscale(100%) brightness(50%);
+    opacity: 0.1;
+    user-select: none;
+    transition: opacity 0.5s;
+  }
+  /* More doodles with varied positions, sizes, rotations */
+  .doodle:nth-child(1) { top: 8%; left: 7%; width: 70px; transform: rotate(8deg); }
+  .doodle:nth-child(2) { top: 18%; left: 80%; width: 50px; transform: rotate(-20deg); }
+  .doodle:nth-child(3) { top: 28%; left: 22%; width: 65px; transform: rotate(12deg); }
+  .doodle:nth-child(4) { top: 35%; left: 45%; width: 40px; transform: rotate(-7deg); }
+  .doodle:nth-child(5) { top: 42%; left: 75%; width: 85px; transform: rotate(18deg); }
+  .doodle:nth-child(6) { top: 56%; left: 28%; width: 60px; transform: rotate(-10deg); }
+  .doodle:nth-child(7) { top: 62%; left: 62%; width: 55px; transform: rotate(5deg); }
+  .doodle:nth-child(8) { top: 72%; left: 85%; width: 50px; transform: rotate(-30deg); }
+  .doodle:nth-child(9) { top: 82%; left: 14%; width: 90px; transform: rotate(20deg); }
+  .doodle:nth-child(10) { top: 92%; left: 55%; width: 45px; transform: rotate(-15deg); }
+
+
+  .login-container {
+    background: white;
+    padding: 32px 28px 36px 28px;
+    box-shadow: 0 0 20px #7ac17a88;
+    border-radius: 12px;
+    width: 340px;
+    max-width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    border: 2px solid #4CAF50;
+  }
+  h2 {
+    margin-bottom: 30px;
+    color: #4CAF50;
+    letter-spacing: 1.1px;
+    font-weight: 700;
+    font-size: 1.9rem;
+    text-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  }
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 10px 0 22px 0;
+    border: 1.8px solid #6ABF69;
+    border-radius: 6px;
+    font-size: 1.05rem;
+    box-sizing: border-box;
+    transition: border-color 0.25s;
+  }
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 8px #8BC34A88;
+  }
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    box-shadow: 0 4px 12px #66bb6a88;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  button:hover {
+    background-color: #43a047;
+    box-shadow: 0 6px 14px #388e3cbb;
+  }
+  .error-message {
+    color: #d32f2f;
+    margin-bottom: 18px;
+    font-weight: 600;
+    text-shadow: 0 0 2px #ff7961cc;
+  }
+  .signup-link {
+    margin-top: 18px;
+    display: inline-block;
+    color: #4CAF50;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: text-decoration 0.3s ease;
+  }
+  .signup-link:hover {
+    text-decoration: underline;
+    color: #388e3c;
+  }
+</style>
+</head>
+<body>
+  <div class="doodle-container" aria-hidden="true">
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616554.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/4170/4170799.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616490.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616441.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616439.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616366.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616413.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616424.png" alt="" class="doodle" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616441.png" alt="" class="doodle" />
+  </div>
+
+  <div class="login-container" role="main">
+    <h2>EcoFinds Login</h2>
+    <div id="error" class="error-message" aria-live="polite"></div>
+    <form id="loginForm" novalidate>
+      <input type="email" id="email" name="email" placeholder="Email" required aria-required="true" />
+      <input type="password" id="password" name="password" placeholder="Password" required aria-required="true" />
+      <button type="submit">Login</button>
+    </form>
+    <a href="signup.html" class="signup-link">New user? Sign up</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorDiv = document.getElementById('error');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      errorDiv.textContent = '';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!email || !password) {
+        errorDiv.textContent = 'Please enter both email and password.';
+        return;
+      }
+
+      // Mock login validation - replace with real authentication as needed
+      // For demo, accept any non-empty inputs as success
+      alert('Login successful for ' + email);
+      // Redirect to landing page after successful login
+      window.location.href = 'landingpage.html'; // Change to your actual landing page URL
+    });
+  </script>
+</body>
+</html>
+
+

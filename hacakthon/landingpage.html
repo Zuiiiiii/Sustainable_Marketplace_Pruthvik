@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Landing Page with Working Search</title>
+<style>
+  /* ... same styles as before ... */
+  /* For brevity, styles are same as provided previously */
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+  }
+  header {
+    background: #5E936C;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1000;
+  }
+  .header-left {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+  .menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+    margin-right: 0;
+  }
+  .header-center {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+  }
+  .logo-image {
+    width: 200px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .sub-header {
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 64px;
+    z-index: 900;
+    position: relative;
+  }
+  .search-wrapper {
+    position: relative;
+    flex-grow: 1;
+    max-width: 500px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  .search-input {
+    width: 100%;
+    padding: 8px 12px 8px 38px;
+    border-radius: 8px;
+    border: 1.5px solid #5E936C;
+    font-size: 1rem;
+    outline: none;
+  }
+  .search-btn {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #5E936C;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .search-btn:hover {
+    color: #3a6f43;
+  }
+  #searchResults {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: white;
+    color: #324d29;
+    font-weight: 600;
+    padding: 10px;
+    border: 1px solid #5E936C;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box;
+    display: none;
+    z-index: 10000;
+  }
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .action-buttons button {
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #5E936C;
+    border-radius: 6px;
+    padding: 6px 10px;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+  }
+  .action-buttons button:hover {
+    background: #4b7a53;
+    color: white;
+  }
+  .cart-btn {
+    font-size: 26px;
+    border: 2px solid #5E936C;
+    padding: 6px 14px;
+  }
+  .account-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: #5E936C;
+    border: 2px solid #5E936C;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .account-circle:hover {
+    background: #4b7a53;
+    color: white;
+  }
+  nav {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #222;
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 9999;
+  }
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  nav ul li {
+    padding: 15px 20px;
+  }
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+  }
+  nav.active {
+    left: 0;
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+  }
+  .content {
+    padding: 2rem;
+    text-align: center;
+  }
+  /* Carousel */
+  .carousel-container {
+    position: relative;
+    margin: 1.5rem auto 2rem;
+    width: 75vw;
+    max-width: 1200px;
+    height: 45vw;
+    max-height: 540px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: white;
+  }
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    will-change: transform;
+    height: 100%;
+  }
+  .carousel-slide {
+    min-width: 100%;
+    user-select: none;
+    height: 100%;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+  .carousel-prev, .carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(40, 100, 40, 0.7);
+    border: none;
+    color: white;
+    font-size: 2em;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+    z-index: 10;
+  }
+  .carousel-prev:hover, .carousel-next:hover {
+    background: rgba(40, 100, 40, 0.9);
+  }
+  .carousel-prev {
+    left: 10px;
+  }
+  .carousel-next {
+    right: 10px;
+  }
+  /* All Categories Section */
+  .categories-section {
+    max-width: 1200px;
+    margin: 2rem auto 4rem;
+    padding: 0 1rem;
+  }
+  .categories-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #324d29;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .categories-grid {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .category-block {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 280px;
+    padding: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+    color: #324d29;
+  }
+  .category-block:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  .category-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+  .category-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="header-center">
+    <img src="logo.jpg" alt="Logo" class="logo-image" />
+  </div>
+</header>
+
+<div class="sub-header">
+  <div class="search-wrapper" style="position: relative;">
+    <button class="search-btn" aria-label="Search" id="searchBtn">🔍</button>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search for products, brands and more" autocomplete="off" />
+    <div id="searchResults">No results found.</div>
+  </div>
+  <div class="action-buttons">
+    <button class="cart-btn" title="View Cart">🛒</button>
+    <button title="Notifications" aria-label="Notifications" id="notificationsBtn">🔔</button>
+    <div class="account-circle" id="userBtn">👤</div>
+  </div>
+</div>
+
+<!-- Carousel Banner -->
+<div class="carousel-container" aria-label="Promotional Banners">
+  <button class="carousel-prev" aria-label="Previous Slide">&#10094;</button>
+  <div class="carousel-track">
+    <div class="carousel-slide">
+      <img src="https://kavipoetryart.in/cdn/shop/articles/Customized_Cork_Gift_Hamper.webp?v=1687591234" alt="Customized Cork Gift Hamper" />
+    </div>
+    <div class="carousel-slide">
+      <img src="https://i.pinimg.com/736x/4d/30/cd/4d30cd2019ab53a74132310e4baacc09.jpg" alt="Banner 2" />
+    </div>
+    <div class="carousel-slide">
+      <img src="https://i.pinimg.com/1200x/9d/97/30/9d9730b53b9720a364bf83a4bfa09e3f.jpg" alt="Banner 3" />
+    </div>
+    <div class="carousel-slide">
+      <img src="https://i.pinimg.com/736x/2b/3e/63/2b3e6381d7b0c68a10e89744b2ef5a75.jpg" alt="Banner 4" />
+    </div>
+    <div class="carousel-slide">
+      <img src="https://i.pinimg.com/736x/8e/47/c5/8e47c5491f164ef7d54bc54b6831ab04.jpg" alt="Banner 5" />
+    </div>
+  </div>
+  <button class="carousel-next" aria-label="Next Slide">&#10095;</button>
+</div>
+
+<!-- All Categories Section -->
+<section class="categories-section" aria-label="All Categories">
+  <h2 class="categories-title">All Categories</h2>
+  <div class="categories-grid">
+    <div class="category-block" onclick="alert('Clicked Agriculture Sector')">
+      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=400&q=60" alt="Agriculture" class="category-image" />
+      <div class="category-title">Agriculture</div>
+    </div>
+    <div class="category-block" onclick="alert('Clicked Technology Sector')">
+      <img src="https://i.pinimg.com/736x/8e/22/9e/8e229eb500ea7d51dd3392481e9726ac.jpg" alt="Technology" class="category-image" />
+      <div class="category-title">Technology</div>
+    </div>
+    <div class="category-block" onclick="alert('Clicked Healthcare Sector')">
+      <img src="https://i.pinimg.com/736x/05/30/26/053026334c7f11be0fba9924ff8aa100.jpg" alt="Healthcare" class="category-image" />
+      <div class="category-title">Healthcare</div>
+    </div>
+    </div> <!-- Closing categories-grid -->
+
+<!-- Add product page link below categories -->
+<div style="text-align: center; margin-top: 1.5rem;">
+  <a href="product.html?product=eco-bamboo-water-bottle" 
+     style="font-weight: 700; font-size: 1.3rem; color: #5E936C; text-decoration: none; border: 2px solid #5E936C; padding: 10px 20px; border-radius: 8px; display: inline-block; transition: background-color 0.3s, color 0.3s; cursor: pointer;">
+    View Eco Bamboo Water Bottle
+  </a>
+</div>
+
+  </div>
+</section>
+
+<nav id="sideMenu">
+  <button class="close-btn" onclick="toggleMenu()">×</button>
+  <ul>
+    <li><a href="#listing" onclick="toggleMenu()">My Listing</a></li>
+    <li><a href="#add" onclick="toggleMenu()">Add Product</a></li>
+    <li><a href="#about" onclick="toggleMenu()">About</a></li>
+    <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+    <li><a href="#signout" onclick="signOut()">Sign Out</a></li>
+  </ul>
+</nav>
+
+<div class="content">
+  <!-- More content can go here -->
+</div>
+<div class="search-result-item">
+  <a href="product.html?product=eco-bamboo-water-bottle" class="product-link">Eco Bamboo Water Bottle</a>
+</div>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("sideMenu").classList.toggle("active");
+  }
+
+  document.getElementById('userBtn').addEventListener('click', function () {
+    window.location.href = 'userpage.html';
+  });
+
+  function signOut() {
+    window.location.href = 'login.html';
+  }
+
+  const notificationsBtn = document.getElementById('notificationsBtn');
+  notificationsBtn.addEventListener('click', function() {
+    alert('You have no new notifications.');
+  });
+
+  const track = document.querySelector('.carousel-track');
+  const slides = Array.from(track.children);
+  const prevButton = document.querySelector('.carousel-prev');
+  const nextButton = document.querySelector('.carousel-next');
+  let currentIndex = 0;
+
+  function updateCarousel() {
+    const slideWidth = slides[0].getBoundingClientRect().width;
+    track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+  }
+
+  prevButton.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateCarousel();
+  });
+
+  nextButton.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateCarousel();
+  });
+
+  window.addEventListener('resize', updateCarousel);
+  updateCarousel();
+
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateCarousel();
+  }, 2000);
+
+  const searchBtn = document.getElementById('searchBtn');
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+
+  const bannerAlts = slides.map(slide => slide.querySelector('img').alt.toLowerCase());
+  const categoryTitles = Array.from(document.querySelectorAll('.category-title')).map(el => el.textContent.toLowerCase());
+
+  function performSearch() {
+    const query = searchInput.value.trim().toLowerCase();
+    if (!query) {
+      searchResults.style.display = 'none';
+      return;
+    }
+
+    const bannerMatch = bannerAlts.some(text => text.includes(query));
+    const categoryMatch = categoryTitles.some(text => text.includes(query));
+
+    searchResults.style.display = (bannerMatch || categoryMatch) ? 'none' : 'block';
+  }
+
+  searchBtn.addEventListener('click', performSearch);
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') performSearch();
+  });
+
+  searchInput.addEventListener('input', () => {
+    if (searchInput.value.trim() === '') {
+      searchResults.style.display = 'none';
+    }
+  });
+
+  window.addEventListener('click', e => {
+    if (!searchInput.contains(e.target) && !searchBtn.contains(e.target)) {
+      searchResults.style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>

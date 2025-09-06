@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EcoFinds Sign Up</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+<style>
+  body {
+    background: #e9f5ec; /* soft greenish white */
+    color: #1b3e1b; /* dark green */
+    font-family: 'Poppins', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+  }
+  .signup-container {
+    background: white;
+    border-radius: 12px;
+    padding: 40px 30px 30px 30px;
+    width: 360px;
+    box-shadow: 0 4px 12px rgb(0 128 0 / 0.2);
+    position: relative;
+    text-align: center;
+  }
+  .signup-container h2 {
+    color: #4CAF50;
+    margin-bottom: 28px;
+    font-size: 2rem;
+    letter-spacing: 1.5px;
+  }
+  .avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #4CAF50;
+    margin: -65px auto 15px;
+    border: 3px solid white;
+    display: block;
+  }
+  .signup-form label {
+    display: block;
+    text-align: left;
+    margin: 8px 0 3px 4px;
+    font-size: 0.98rem;
+  }
+  .signup-form input[type="text"],
+  .signup-form input[type="email"],
+  .signup-form input[type="password"] {
+    width: 100%;
+    padding: 10px 8px;
+    margin-bottom: 12px;
+    border: 1.8px solid #4CAF50;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #1b3e1b;
+    background: #f7fff7;
+  }
+  .signup-form input[type="text"]:focus,
+  .signup-form input[type="email"]:focus,
+  .signup-form input[type="password"]:focus {
+    border-color: #2e7d32;
+    outline: none;
+    background: white;
+  }
+  .signup-form button {
+    background: #4CAF50;
+    color: white;
+    padding: 14px;
+    width: 100%;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px #66bb6a88;
+    transition: background-color 0.3s ease;
+  }
+  .signup-form button:hover {
+    background: #388e3c;
+  }
+  .error-message {
+  display: none;
+  background: #ffebee;
+  color: #d32f2f;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 0.96rem;
+  letter-spacing: 0.4px;
+  min-height: 28px;
+  }
+  .login-link {
+    margin-top: 18px;
+    display: inline-block;
+    color: #4CAF50;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .login-link:hover {
+    text-decoration: underline;
+    color: #388e3c;
+  }
+</style>
+</head>
+<body>
+  
+  <div class="signup-container" role="main">
+    <div class="avatar"></div>
+    <h2>Sign up page</h2>
+    <div id="error" class="error-message" aria-live="polite"></div>
+    <form class="signup-form" id="signupForm" autocomplete="off">
+      <label for="displayName">Name:</label>
+      <input type="text" id="displayName" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" required minlength="8" />
+
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" id="confirmPassword" required minlength="8" />
+
+      <button type="submit">Sign up</button>
+    </form>
+    <a href="landingpage.html" class="landingpage-link">Already have an account? Login</a>
+  </div>
+
+  <script>
+    // Fake existing users for demo
+    const existingUsers = [
+      {displayName:"john", email:"john@example.com"},
+      {displayName:"lucy", email:"lucy@site.com"}
+    ];
+
+    const form = document.getElementById('signupForm');
+    const errorDiv = document.getElementById('error');
+
+    function validatePassword(pwd) {
+      return pwd.length >= 6;
+    }
+
+    function validateEmail(email) {
+      // Simple email regex
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    async function isUnique(email) {
+      return !existingUsers.some(u =>
+        u.email.toLowerCase() === email.toLowerCase()
+      );
+    }
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      errorDiv.textContent = '';
+      errorDiv.style.display = 'none';
+
+      const displayName = document.getElementById('displayName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!displayName) {
+        errorDiv.textContent = 'Display name required.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      if (!validateEmail(email)) {
+        errorDiv.textContent = 'Enter a valid email address.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      if (!validatePassword(password)) {
+        errorDiv.textContent = 'Password must be at least 6 characters.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+      if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      if (!(await isUnique(email))) {
+        errorDiv.textContent = 'Email already exists.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      try {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+        console.log('Hashed password (demo):', hash);
+
+        alert(`Signup successful for ${displayName}!`);
+        
+        // Redirect to landing page after successful signup
+        window.location.href = 'landingpage.html'; // Change this to your landing page path
+      } catch {
+        errorDiv.textContent = 'Something went wrong, please try again.';
+        errorDiv.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

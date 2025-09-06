@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EcoFinds Product Page</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    color: #324d29;
+  }
+  header {
+    background: #5E936C;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1000;
+  }
+  .header-left {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+  }
+  .menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+  }
+  .header-center {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+  }
+  .logo-image {
+    width: 200px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  nav#sideMenu {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #222;
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 9999;
+  }
+  nav#sideMenu.active {
+    left: 0;
+  }
+  nav#sideMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  nav#sideMenu ul li {
+    padding: 15px 20px;
+  }
+  nav#sideMenu ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    background: none;
+    border: none;
+  }
+  .cart-btn-easy {
+    position: relative;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #5E936C;
+    margin-left: 10px;
+  }
+  .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #e74c3c;
+    color: white;
+    font-weight: 700;
+    border-radius: 12px;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    min-width: 18px;
+    text-align: center;
+    pointer-events: none;
+    display: none;
+  }
+  .back-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 7px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 600;
+    box-shadow: 0 3px 8px #4caf5070;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+  }
+  .back-btn:hover {
+    background-color: #3a9342;
+  }
+  .product-page-container {
+    max-width: 1200px;
+    margin: 1.5rem auto 3rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    padding: 1rem 1.5rem;
+  }
+  .product-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .product-logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #5E936C;
+    font-family: Arial, sans-serif;
+  }
+  .product-image-container {
+    border: 1.5px solid #96ca76;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    background: #f2f8f1;
+    max-height: 540px;
+    margin-bottom: 1rem;
+  }
+  .product-image-container img {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 10px;
+  }
+  .carousel-dots {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .carousel-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #6abf69;
+    border-radius: 50%;
+    opacity: 0.3;
+    margin: 0 4px;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .carousel-dot.active {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  .product-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+    background: #eef7ea;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+  }
+  .add-to-cart-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 5px 15px #8bc34a88;
+    transition: background-color 0.3s ease;
+  }
+  .add-to-cart-btn:hover {
+    background: #429642;
+  }
+  @media (max-width: 650px) {
+    .product-page-container {
+      padding: 1rem 1rem;
+      max-width: 95vw;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-left">
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+  <div class="header-center">
+    <img src="logo.jpg" alt="Logo" class="logo-image" />
+  </div>
+</header>
+
+<nav id="sideMenu">
+  <button class="close-btn" onclick="toggleMenu()">×</button>
+  <ul>
+    <li><a href="#listing" onclick="toggleMenu()">My Listing</a></li>
+    <li><a href="#add" onclick="toggleMenu()">Add Product</a></li>
+    <li><a href="#about" onclick="toggleMenu()">About</a></li>
+    <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+    <li><a href="#signout" onclick="signOut()">Sign Out</a></li>
+  </ul>
+</nav>
+
+<main class="product-page-container" role="main">
+  <div class="product-header">
+    <span class="product-logo">EcoFinds</span>
+    <button class="cart-btn-easy" aria-label="View Cart" id="cartButton">
+      🛒
+      <span id="cartCount" class="cart-count">0</span>
+    </button>
+  </div>
+
+  <button class="back-btn" type="button" onclick="window.location.href='landingpage.html'">← Back to Home</button>
+
+  <div class="product-image-container">
+    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Eco Bamboo Water Bottle" id="mainProductImage" />
+  </div>
+
+  <div class="carousel-dots" role="tablist" aria-label="Product images">
+    <span class="carousel-dot active" role="tab" aria-selected="true" tabindex="0" aria-controls="image1" id="dot1"></span>
+    <span class="carousel-dot" role="tab" aria-selected="false" tabindex="-1" aria-controls="image2" id="dot2"></span>
+    <span class="carousel-dot" role="tab" aria-selected="false" tabindex="-1" aria-controls="image3" id="dot3"></span>
+  </div>
+
+  <section class="product-description" aria-labelledby="descHeading" id="productDesc">
+    <h3 id="descHeading" style="margin-top: 0;">Eco Bamboo Water Bottle</h3>
+    Purely made from bamboo & recyclable steel. Double-walled insulation.
+    <ul style="padding-left: 20px; margin-top: 12px;">
+      <li>700ml capacity</li>
+      <li>Keeps drinks hot/cold for 12 hours</li>
+      <li>100% biodegradable packaging</li>
+    </ul>
+    <p>All our products are sustainably sourced and tested for safety.</p>
+  </section>
+
+  <button class="add-to-cart-btn" type="button" id="addToCartBtn">Add to cart</button>
+</main>
+
+<script>
+  function toggleMenu() {
+    document.getElementById("sideMenu").classList.toggle("active");
+  }
+  function signOut() {
+    window.location.href = 'login.html';
+  }
+
+  const mainImg = document.getElementById('mainProductImage');
+  const dots = Array.from(document.querySelectorAll('.carousel-dot'));
+  const cartCountElem = document.getElementById('cartCount');
+  const addToCartBtn = document.getElementById('addToCartBtn');
+  const cartButton = document.getElementById('cartButton');
+
+  const images = [
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=80",
+    "https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=400&q=80"
+  ];
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      mainImg.src = images[index];
+      dots.forEach(d => {
+        d.classList.remove('active');
+        d.setAttribute('aria-selected', 'false');
+        d.tabIndex = -1;
+      });
+      dot.classList.add('active');
+      dot.setAttribute('aria-selected', 'true');
+      dot.tabIndex = 0;
+    });
+  });
+
+  // Helper to get cart items as array from localStorage
+  function loadCartItems() {
+    const itemsJson = localStorage.getItem('ecoCartItems');
+    return itemsJson ? JSON.parse(itemsJson) : [];
+  }
+
+  // Update cart count badge based on total quantities
+  function updateCartCount() {
+    const cartItems = loadCartItems();
+    const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    if (totalCount > 0) {
+      cartCountElem.style.display = 'inline-block';
+      cartCountElem.textContent = totalCount;
+    } else {
+      cartCountElem.style.display = 'none';
+      cartCountElem.textContent = '';
+    }
+  }
+
+  // Initialize count on page load
+  updateCartCount();
+
+  addToCartBtn.addEventListener('click', () => {
+    let cartItems = loadCartItems();
+    const productId = 'eco-bamboo-water-bottle';
+    const productName = 'Eco Bamboo Water Bottle';
+
+    const existingIndex = cartItems.findIndex(item => item.id === productId);
+    if (existingIndex !== -1) {
+      cartItems[existingIndex].quantity++;
+    } else {
+      cartItems.push({ id: productId, name: productName, quantity: 1 });
+    }
+
+    localStorage.setItem('ecoCartItems', JSON.stringify(cartItems));
+    updateCartCount();
+    alert('Added 1 Eco Bamboo Water Bottle to your cart.');
+  });
+
+  cartButton.addEventListener('click', () => {
+    window.location.href = 'checkout.html';
+  });
+</script>
+</body>
+</html>
